@@ -27,3 +27,21 @@ Feature: Carnival - Booking flow
     Scenario: Carnival - search bahamas cruises - default sort cheapest first
         Given The search performed by the user returns at least one result
         Then The default price sort will be cheapest first
+    
+    Scenario: Carnival - search bahamas cruises - open one trip redirects user to itinerary detail page
+        Given The search performed by the user returns at least one result
+        When The user opens the first result
+        Then The user is redirected to the trip details page
+
+    Scenario: Carnival - search bahamas cruises - in a trip each day has its onw details
+        Given The search performed by the user returns at least one result
+        When The user opens the first result
+        Then The user is redirected to the trip details page
+        And The user can open each day detail by clicking in each read more button
+
+    Scenario: Carnival - search bahamas cruises - book now a trip
+        Given The search performed by the user returns at least one result
+        When The user opens the first result
+        Then The user is redirected to the trip details page
+        And The user can book now that trip
+        And The user is redirected to booking page
