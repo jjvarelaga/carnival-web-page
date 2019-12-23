@@ -1,0 +1,57 @@
+{
+  "env": {
+    "node": true,
+    "browser": true
+  },
+  "globals": {
+    "expect": "readonly",
+    "loginPage": "writable",
+    "adminLoginPage": "writable",
+    "adminPanelPage": "writable",
+    "adminUsersPage": "writable",
+    "adminThemesPage": "writable",
+    "adminArticlesPage": "writable",
+    "dashboardPage": "writable",
+    "settingsPage": "writable",
+    "helpCenterPage": "writable",
+    "adminCategoriesPage": "writable",
+    "adminFeaturesPage": "writable",
+    "adminRolesPage": "writable",
+    "adminApplicationsPage": "writable",
+    "loginUtils": "writable",
+    "edgeUtils": "writable",
+    "employee": "writable",
+    "agent": "writable",
+    "pageManager": "writable",
+    "userWithTag": "writable"
+  },
+  "plugins": [
+    "chai-friendly",
+    "unicorn",
+    "sonarjs"
+  ],
+  "extends": [
+    "airbnb-base",
+    "plugin:unicorn/recommended",
+    "plugin:sonarjs/recommended"
+  ],
+  "rules": {
+    "no-await-in-loop": "off"
+  },
+  "overrides": [
+    {
+      "files": "*.spec.js",
+      "rules": {
+        "no-unused-expressions": "off",
+        "func-names": "off",
+        "chai-friendly/no-unused-expressions": "error"
+      }
+    },
+    {
+      "files": "*.conf.js",
+      "rules": {
+        "unicorn/prevent-abbreviations": "off"
+      }
+    }
+  ]
+}
