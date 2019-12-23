@@ -18,6 +18,7 @@ class CarnivalSearchPage {
         const maxPriceFilter = element(by.css('.rz-pointer-max'));
         const arrayCruisePrices = element.all(by.css('.vrgf-price-box__price'));
 
+        // looks if the home page is ready to go, also checks if there is an initial pop up that must be closed
         this.areWeInSearchPage = async function () {
             if(await this.isSingUpModalVisible()){
                 await this.clickCloseSingUpModal();
@@ -27,36 +28,42 @@ class CarnivalSearchPage {
               .then(() => true, () => false);
         };
 
+        // check if the initial pop up is present
         this.isSingUpModalVisible = async function () {
             return browser
               .wait(until.presenceOf(singUpModal), 5000)
               .then(() => true, () => false);
         };
 
+        // closed the initial pop up
         this.clickCloseSingUpModal = async function () {
             await browser.wait(until.elementToBeClickable(singUpModal)).then(
                 singUpModal.click(),
             );
         };
 
+        // it opens the destination menu
         this.clickSailToMenu = async function () {
             await browser.wait(until.elementToBeClickable(sailToMenu)).then(
                 sailToMenu.click(),
             );
         };
 
+        // it opens the duration to allow the selection one of the available options
         this.clickDurationMenu = async function () {
             await browser.wait(until.elementToBeClickable(durationMenu)).then(
                 durationMenu.click(),
             );
         };
 
+        // either if the option is from destination or duration it will allow to select the option needed using part or the full name
         this.isOptionByNamePrensent = async function (optionName) {
             return browser
               .wait(until.presenceOf(optionByName(optionName)), 5000)
               .then(() => true, () => false);
         }
 
+        // either if the option is from destination or duration it will allow to select the option needed using part or the full name
         this.selectOptionByName = async function (optionName) {
             let optionSelected = false;
             await this.isOptionByNamePrensent(optionName);
@@ -66,24 +73,21 @@ class CarnivalSearchPage {
             }while(!optionSelected);
         };
 
+        // after the selection of an option inside destination/duration menu it confirms that the option selected changes its status to active
         this.isSearchFilterActivePresent = async function () {
             return browser
               .wait(until.presenceOf(searchFilterActive), 2000)
               .then(() => true, () => false);
         };
 
+        // it validate that there is search results
         this.isSearchResultVisible = async function () {
             return browser
               .wait(until.visibilityOf(resultsLearnMoreButton.get(0)), 5000)
               .then(() => true, () => false);
         };
 
-        this.isSearchResultVisible = async function () {
-            return browser
-              .wait(until.visibilityOf(resultsLearnMoreButton.get(0)), 5000)
-              .then(() => true, () => false);
-        };
-
+        // it validates that the default view is a grid by checking the class of the display mode
         this.isDefaultViewGrid = async function () {
             await browser.wait(until.visibilityOf(resultsGridView));
             if(await resultsGridView.getAttribute('class')==""){
@@ -93,25 +97,28 @@ class CarnivalSearchPage {
             } 
         };
 
+        // it displays the pricing filters
         this.clickPricingFilter = async function () {
             await browser.wait(until.elementToBeClickable(pricingFilter)).then(
                 pricingFilter.click(),
             );
         };
 
+        // it allows to select the min price filter
         this.clickMinPricingFilter = async function () {
             await browser.wait(until.visibilityOf(minPriceFilter));
             await browser.wait(until.visibilityOf(priceFilterActive));
             await this.mouseMoveAndClick(minPriceFilter);
         };
 
+        // it allows to select the max price filter
         this.clickMaxPricingFilter = async function () {
             await browser.wait(until.visibilityOf(maxPriceFilter));
             await browser.wait(until.visibilityOf(priceFilterActive));
             await this.mouseMoveAndClick(maxPriceFilter);
         };
 
-        // Move mouse to an element and perform a click - this will overcome scroll issue
+        // Move mouse to an element and perform a click - this will overcome scroll issue (bugtracker issue 1)
         this.mouseMoveAndClick = async function (element){
             let actionsSeq = await browser.actions();
             await actionsSeq
@@ -136,6 +143,7 @@ class CarnivalSearchPage {
             }
         };
 
+        // it check one by one the price to confirm that default sort is the cheapest first
         this.checkLowesPriceSort = async function (){
             const cruisesCount = await arrayCruisePrices.count();
             let minPrice = await this.getPriceValue(arrayCruisePrices.get(0));
@@ -151,12 +159,14 @@ class CarnivalSearchPage {
             return true;
         };
 
+        // it takes from the innerText attribute the price value using a regular expresion
         this.getPriceValue = async function (element){
             const strValue = await element.getAttribute('innerText');
             const minPrice = strValue.match(/(\d+)/);
             return minPrice;
         };
 
+        // it opens the first trip result
         this.clickFirsTripResult = async function(){
             await browser.wait(until.elementToBeClickable(resultsLearnMoreButton.get(0))).then(
                 resultsLearnMoreButton.get(0).click(),
